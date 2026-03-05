@@ -1,3 +1,4 @@
+// GET /
 exports.home = (req, res)=>{
   const users = [
     {
@@ -22,6 +23,9 @@ exports.home = (req, res)=>{
       password: "123456"
     }
   ];
-
   res.render('index', {title: "Home", users} );
 }
+  // GET /add
+  exports.addPage = (req, res)=>{
+    res.render('add',{title: 'Add New User'});
+  };
