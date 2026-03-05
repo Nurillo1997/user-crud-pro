@@ -1,0 +1,42 @@
+<%- include('layout/header') %>
+
+<div class="container mt-4">
+
+  <!-- <%- include('partials/message') %> -->
+
+  <% if (users.length > 0) { %>
+    <table class="table table-striped text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% users.forEach((user, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td>
+              <img src="/uploads/<%= user.image %>" width="50" class="rounded">
+            </td>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.phone %></td>
+            <td>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <h3 class="text-center text-muted">No users</h3>
+  <% } %>
+
+</div>
+
+<%- include('layout/footer') %>

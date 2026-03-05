@@ -32,7 +32,8 @@ app.use((req,res,next)=>{
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-
+// routes
+app.use('/', require('./routes/userRoutes'));
 
 // Server connection
 const PORT = process.env.PORT || 4000;
