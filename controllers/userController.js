@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const fs = require('fs').promises;
+const path = require('path');
 // GET /
 exports.home = async(req, res)=>{
   const users = await User.find().lean();
@@ -26,4 +28,22 @@ exports.home = async(req, res)=>{
     const user = await User.findById(req.params.id).lean();
     if(!user) return res.redirect('/');
     res.render('edit', {title: 'Edit User', user});
+  };
+
+  // POST /edit/:id
+  exports.editUser = async(req, res)=>{
+    let image = req.body.old_image;
+
+    if(req.file){
+      image = req.file.filename;
+      await fs.unlink(path.join(__dirname, '../public/uploads', req.body.old_image));
+    }
+
+    await User.findByIdAndUpdate(req.params.id,{
+      ...req.body,
+      image
+    });
+
+    req.session.message = {type: 'success', message: 'Update'};
+    res.redirect('/');
   };

@@ -8,7 +8,7 @@
         </div>
         <div class="card-body p-4">
           <form
-            action=""
+            action="/edit/<%=user._id%>"
             method="post"
             id="add-form"
             enctype="multipart/form-data"
@@ -52,7 +52,6 @@
                 type="file"
                 name="image"
                 class="form-control form-control-lg"
-                required
               />
               <img
                 src="/uploads/<%= user.image %>"
