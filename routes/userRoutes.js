@@ -5,4 +5,5 @@ const upload = require('../middlewares/upload');
 router.get('/', ctrl.home);
 router.get('/add', ctrl.addPage);
 router.post('/add', upload, ctrl.addUser);
+router.get('/edit/:id', ctrl.editPage);
 module.exports = router;

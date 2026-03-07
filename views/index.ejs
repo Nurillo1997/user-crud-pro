@@ -28,9 +28,10 @@
             <td><%= user.email %></td>
             <td><%= user.phone %></td>
             <td>
-              </form>
-
-            </td>
+                <a href="/edit/<%= user._id %>" class="text-success"
+                  ><i class="fas fa-edit fa-lg mx-1"></i
+                ></a>
+              </td>
           </tr>
         <% }) %>
       </tbody>
