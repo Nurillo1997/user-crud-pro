@@ -1,31 +1,22 @@
+const User = require('../models/User');
 // GET /
-exports.home = (req, res)=>{
-  const users = [
-    {
-      name: "Ali Valiyev",
-      email: "ali@example.com",
-      phone: "+998901234567",
-      image: "user1.jpg",
-      password: "123456"
-    },
-    {
-      name: "Bekzod Karimov",
-      email: "bekzod@example.com",
-      phone: "+998909876543",
-      image: "user2.jpg",
-      password: "123456"
-    },
-    {
-      name: "Dilshod Rasulov",
-      email: "dilshod@example.com",
-      phone: "+998933334455",
-      image: "user3.jpg",
-      password: "123456"
-    }
-  ];
+exports.home = async(req, res)=>{
+  const users = await User.find().lean();
   res.render('index', {title: "Home", users} );
 }
   // GET /add
   exports.addPage = (req, res)=>{
     res.render('add',{title: 'Add New User'});
+  };
+
+  // POST /add
+  exports.addUser = async (req, res)=>{
+    const user = new User({
+      ...req.body,
+      image: req.file.filename
+    });
+    await user.save();
+
+    req.session.message = {type: 'success', message: "User added"};
+    res.redirect('/');
   };
