@@ -47,3 +47,14 @@ exports.home = async(req, res)=>{
     req.session.message = {type: 'success', message: 'Update'};
     res.redirect('/');
   };
+
+  // POST /delete/:id
+  exports.deleteUser = async(req, res)=>{
+    const user = await User.findByIdAndDelete(req.params.id)
+
+    if(user?.image){
+      await fs.unlink(path.join(__dirname, '../public/uploads/', user.image));
+    }
+    req.session.message = {type: 'info', message: 'User deleted'};
+    res.redirect('/');
+  };

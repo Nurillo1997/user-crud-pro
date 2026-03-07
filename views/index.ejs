@@ -1,8 +1,8 @@
 <%- include('layout/header') %>
 
-<div class="container mt-4" >
+<div class="container mt-4 responsive" >
 
-  <!-- <%- include('partials/message') %> -->
+  <%- include('partials/message') %>
 
   <% if (users.length > 0) { %>
     <table class="table table-striped my-3">
@@ -30,6 +30,9 @@
             <td>
                 <a href="/edit/<%= user._id %>" class="text-success"
                   ><i class="fas fa-edit fa-lg mx-1"></i
+                ></a>
+                <a href="/delete/<%= user._id %>" class="text-danger"
+                  ><i class="fas fa-trash fa-lg mx-1"></i
                 ></a>
               </td>
           </tr>

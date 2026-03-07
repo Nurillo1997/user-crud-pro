@@ -7,4 +7,5 @@ router.get('/add', ctrl.addPage);
 router.post('/add', upload, ctrl.addUser);
 router.get('/edit/:id', ctrl.editPage);
 router.post('/edit/:id', upload, ctrl.editUser);
+router.get('/delete/:id', ctrl.deleteUser);
 module.exports = router;
