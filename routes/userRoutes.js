@@ -4,8 +4,9 @@ const upload = require('../middlewares/upload');
 
 router.get('/', ctrl.home);
 router.get('/add', ctrl.addPage);
-router.post('/add', upload, ctrl.addUser);
+router.post('/add', upload, ctrl.addProduct);
 router.get('/edit/:id', ctrl.editPage);
-router.post('/edit/:id', upload, ctrl.editUser);
-router.get('/delete/:id', ctrl.deleteUser);
+router.post('/edit/:id', upload, ctrl.editProduct);
+router.get('/delete/:id', ctrl.deleteProduct);
+router.get('/login', ctrl.loginPage);
 module.exports = router;

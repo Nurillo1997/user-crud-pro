@@ -1,37 +1,39 @@
 <%- include('layout/header') %>
 
-<div class="container mt-4 responsive" >
+<div class="container mt-4 table-responsive" >
 
   <%- include('partials/message') %>
 
-  <% if (users.length > 0) { %>
-    <table class="table table-striped my-3">
-      <thead class="table-dark">
+  <% if (products.length > 0) { %>
+    <table class="table table-bordered table-striped my-3">
+      <thead class="table-dark ">
         <tr>
-          <th>#</th>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Action</th>
+          <th>N</th>
+          <th class="centered">Image</th>
+          <th>Product Name</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th class="centered">Action</th>
         </tr>
       </thead>
 
       <tbody class="align-middle">
-        <% users.forEach((user, index) => { %>
+        <% products.forEach((product, index) => { %>
           <tr>
             <td><%= index + 1 %></td>
-            <td>
-              <img src="/uploads/<%= user.image %>" width="50" class="rounded">
+            <td class="centered">
+              <img src="/uploads/<%= product.image %>" width="50" class="rounded">
             </td>
-            <td><%= user.name %></td>
-            <td><%= user.email %></td>
-            <td><%= user.phone %></td>
-            <td>
-                <a href="/edit/<%= user._id %>" class="text-success"
+            <td><%= product.name.charAt(0).toUpperCase() + product.name.slice(1)%></td>
+            <td><%= product.price %>$</td>
+            <td><%= product.category.charAt(0).toUpperCase() + product.category.slice(1) %></td>
+            <td><%= product.quantity %></td>
+            <td class="centered">
+                <a href="/edit/<%= product._id %>" class="text-success"
                   ><i class="fas fa-edit fa-lg mx-1"></i
                 ></a>
-                <a href="/delete/<%= user._id %>" class="text-danger"
+                <a href="/delete/<%= product._id %>" class="text-danger"
                   ><i class="fas fa-trash fa-lg mx-1"></i
                 ></a>
               </td>
@@ -40,7 +42,7 @@
       </tbody>
     </table>
   <% } else { %>
-    <h3 class="text-center text-muted">No users</h3>
+    <h3 class="text-center text-muted">No produdcts</h3>
   <% } %>
 
 </div>

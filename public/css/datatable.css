@@ -1,0 +1,7 @@
+table.dataTable td.dt-type-numeric,
+table.dataTable th.dt-type-numeric {
+  text-align: center !important;
+}
+.centered{
+  text-align: center !important;
+}
