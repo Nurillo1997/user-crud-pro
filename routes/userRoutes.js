@@ -9,4 +9,5 @@ router.get('/edit/:id', ctrl.editPage);
 router.post('/edit/:id', upload, ctrl.editProduct);
 router.get('/delete/:id', ctrl.deleteProduct);
 router.get('/login', ctrl.loginPage);
+router.get('/signup', ctrl.signupPage);
 module.exports = router;

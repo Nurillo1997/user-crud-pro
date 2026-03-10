@@ -68,3 +68,7 @@ exports.deleteProduct = async (req, res) => {
 exports.loginPage = async (req, res) => {
   res.render("login", { title: "Login" });
 };
+// GET /signup
+exports.signupPage = async (req, res) => {
+  res.render("signup", { title: "Sign up" });
+};

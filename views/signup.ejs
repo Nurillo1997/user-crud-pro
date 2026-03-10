@@ -8,23 +8,43 @@
         </div>
         <div class="card-body p-4">
           <form
-            action="/sign-in"
+            action="/sign-up"
             method="post"
             id="add-form"
             enctype="multipart/form-data"
           >
             <div class="mb-3">
+              <label for="name">Full Name</label>
+              <input
+                type="text"
+                name="fullName"
+                class="form-control form-control-lg"
+                placeholder="Full Name"
+                required
+              />
+            </div>
+            <div class="mb-3">
               <label for="name">Username</label>
               <input
                 type="text"
-                name="password"
+                name="name"
                 class="form-control form-control-lg"
                 placeholder="Username"
                 required
               />
             </div>
             <div class="mb-3">
-              <label for="email">Password</label>
+              <label for="email">Gmail</label>
+              <input
+                type="email"
+                name="email"
+                class="form-control form-control-lg"
+                placeholder="Gmail"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="password">Password</label>
               <input
                 type="password"
                 name="password"
@@ -37,12 +57,12 @@
               <input
                 type="submit"
                 name="submit"
-                value="Login"
+                value="Sign up"
                 class="btn btn-primary btn-lg"
               />
             </div>
             <p style="text-align: center">
-              Don't have an account yet? <a href="/signup">Sign up for free</a>
+              Already have an acount? <a href="/login">Back to login</a>
             </p>
           </form>
         </div>
