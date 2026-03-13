@@ -29,6 +29,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// Auth user
+app.use((req, res, next) => {
+  res.locals.user = req.session.user;
+  next();
+});
+
 // view engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));

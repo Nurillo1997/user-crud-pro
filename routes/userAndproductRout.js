@@ -20,4 +20,7 @@ router.post('/signup', authCtrl.signup)
 router.get('/login', authCtrl.loginPage);
 router.post('/login', authCtrl.login);
 
+//Logout
+router.get('/logout', authCtrl.logout);
+
 module.exports = router;

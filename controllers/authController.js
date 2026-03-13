@@ -27,6 +27,12 @@ exports.signup = async (req, res) => {
 
 // GET /login
 exports.loginPage = async (req, res) => {
+  if (req.query.msg === 'logout') {
+    res.locals.message = {
+      type: 'success',
+      message: 'Logged out successfully'
+    };
+  }
   res.render("login", { title: "Login" });
 };
 
@@ -53,4 +59,11 @@ exports.login = async (req, res) => {
   req.session.user = user._id;
 
   res.redirect('/');
+};
+// LOGOUT
+exports.logout = (req, res) => {
+  req.session.destroy(() => {
+    req.session = null;
+    res.redirect('/login?msg=logout');
+  });
 };
