@@ -1,6 +1,9 @@
 const router = require('express').Router();
-const ctrl = require('../controllers/userController');
+const ctrl = require('../controllers/productController');
+const authCtrl = require('../controllers/authController');
 const upload = require('../middlewares/upload');
+
+//PRODUCT controllers
 
 router.get('/', ctrl.home);
 router.get('/add', ctrl.addPage);
@@ -8,6 +11,13 @@ router.post('/add', upload, ctrl.addProduct);
 router.get('/edit/:id', ctrl.editPage);
 router.post('/edit/:id', upload, ctrl.editProduct);
 router.get('/delete/:id', ctrl.deleteProduct);
-router.get('/login', ctrl.loginPage);
-router.get('/signup', ctrl.signupPage);
+
+//AUTH controllers
+
+router.get('/signup', authCtrl.signupPage);
+router.post('/signup', authCtrl.signup)
+
+router.get('/login', authCtrl.loginPage);
+router.post('/login', authCtrl.login);
+
 module.exports = router;

@@ -64,11 +64,4 @@ exports.deleteProduct = async (req, res) => {
   res.redirect("/");
 };
 
-// GET /login
-exports.loginPage = async (req, res) => {
-  res.render("login", { title: "Login" });
-};
-// GET /signup
-exports.signupPage = async (req, res) => {
-  res.render("signup", { title: "Sign up" });
-};
+
