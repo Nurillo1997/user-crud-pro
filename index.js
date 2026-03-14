@@ -5,6 +5,7 @@ const session = require('express-session');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
+const User = require('./models/User');
 
 const app = express();
 
@@ -22,6 +23,17 @@ app.use(session({
   saveUninitialized: false,
 }));
 
+
+app.use(async (req, res, next) => {
+  if (req.session.user) {
+    const user = await User.findById(req.session.user).lean();
+    res.locals.user = user;
+  } else {
+    res.locals.user = null;
+  }
+  next();
+});
+
 //Flash message
 app.use((req,res,next)=>{
   res.locals.message = req.session.message;
@@ -29,8 +41,15 @@ app.use((req,res,next)=>{
   next();
 });
 // Auth user to all views
-app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
+app.use(async (req, res, next) => {
+  if (req.session.user) {
+    const user = await User.findById(req.session.user).lean();
+    res.locals.user = user;
+  } else {
+    res.locals.user = null;
+  }
+
+  res.locals.currentPath = req.path;
   next();
 });
 
