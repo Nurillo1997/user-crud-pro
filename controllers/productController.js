@@ -2,11 +2,12 @@ const User = require("../models/User");
 const Product = require("../models/Product");
 const fs = require("fs").promises;
 const path = require("path");
+const { request } = require("http");
 
 
 // GET /
 exports.home = async (req, res) => {
-  const products = await Product.find().lean();
+  const products = await Product.find({ owner: req.session.user }).lean();
   res.render("index", { title: "Home", products });
 };
 // GET /add
@@ -19,6 +20,7 @@ exports.addProduct = async (req, res) => {
   const product = new Product({
     ...req.body,
     image: req.file.filename,
+    owner: req.session.user
   });
   await product.save();
 
@@ -28,8 +30,11 @@ exports.addProduct = async (req, res) => {
 
 // GET /edit/:id
 exports.editPage = async (req, res) => {
-  const product = await Product.findById(req.params.id).lean();
-  if (!product) return res.redirect("/");
+  const product = await Product.findById({ _id: req.params.id, owner: req.session.user }).lean();
+  if (!product) {
+    req.session.message = { type: "danger", message: "Unauthorized" };
+    return res.redirect("/");
+  }
   res.render("edit", { title: "Edit Product", product });
 };
 
@@ -44,7 +49,7 @@ exports.editProduct = async (req, res) => {
     );
   }
 
-  await Product.findByIdAndUpdate(req.params.id, {
+  await Product.findByIdAndUpdate(req.params.id, { owner: req.session.user }, {
     ...req.body,
     image,
   });
@@ -55,7 +60,7 @@ exports.editProduct = async (req, res) => {
 
 // POST /delete/:id
 exports.deleteProduct = async (req, res) => {
-  const product = await Product.findByIdAndDelete(req.params.id);
+  const product = await Product.findByIdAndDelete({ _id: req.params.id, owner: req.session.user });
 
   if (product?.image) {
     await fs.unlink(path.join(__dirname, "../public/uploads/", product.image));
