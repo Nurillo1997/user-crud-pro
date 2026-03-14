@@ -29,12 +29,18 @@ exports.addProduct = async (req, res) => {
 };
 
 // GET /edit/:id
+// GET /edit/:id
 exports.editPage = async (req, res) => {
-  const product = await Product.findById({ _id: req.params.id, owner: req.session.user }).lean();
+  const product = await Product.findOne({
+    _id: req.params.id,
+    owner: req.session.user
+  }).lean();
+
   if (!product) {
     req.session.message = { type: "danger", message: "Unauthorized" };
     return res.redirect("/");
   }
+
   res.render("edit", { title: "Edit Product", product });
 };
 
@@ -44,15 +50,20 @@ exports.editProduct = async (req, res) => {
 
   if (req.file) {
     image = req.file.filename;
-    await fs.unlink(
-      path.join(__dirname, "../public/uploads", req.body.old_image),
+
+    const filePath = path.join(
+      __dirname,
+      "../public/uploads",
+      req.body.old_image
     );
+
+    await fs.unlink(filePath).catch(() => {});
   }
 
-  await Product.findByIdAndUpdate(req.params.id, { owner: req.session.user }, {
-    ...req.body,
-    image,
-  });
+  await Product.findOneAndUpdate(
+    { _id: req.params.id, owner: req.session.user },
+    { ...req.body, image }
+  );
 
   req.session.message = { type: "success", message: "Product updated" };
   res.redirect("/");
@@ -60,11 +71,21 @@ exports.editProduct = async (req, res) => {
 
 // POST /delete/:id
 exports.deleteProduct = async (req, res) => {
-  const product = await Product.findByIdAndDelete({ _id: req.params.id, owner: req.session.user });
+  const product = await Product.findOneAndDelete({
+    _id: req.params.id,
+    owner: req.session.user
+  });
 
   if (product?.image) {
-    await fs.unlink(path.join(__dirname, "../public/uploads/", product.image));
+    const filePath = path.join(
+      __dirname,
+      "../public/uploads",
+      product.image
+    );
+
+    await fs.unlink(filePath).catch(() => {});
   }
+
   req.session.message = { type: "info", message: "Product deleted" };
   res.redirect("/");
 };
