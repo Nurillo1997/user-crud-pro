@@ -49,7 +49,7 @@ exports.editProduct = async (req, res) => {
     image,
   });
 
-  req.session.message = { type: "success", message: "Update" };
+  req.session.message = { type: "success", message: "Product updated" };
   res.redirect("/");
 };
 
