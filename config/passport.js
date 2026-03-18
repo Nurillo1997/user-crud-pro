@@ -4,6 +4,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
+/* ================= GOOGLE ================= */
+
 passport.use(
   new GoogleStrategy(
     {
@@ -11,7 +13,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (_, __, profile, done) => {
       try {
         const email = profile.emails[0].value;
 
@@ -19,6 +21,7 @@ passport.use(
         if (user) return done(null, user);
 
         user = await User.findOne({ email });
+
         if (user) {
           user.googleId = profile.id;
           await user.save();
@@ -27,27 +30,19 @@ passport.use(
 
         user = await User.create({
           googleId: profile.id,
-          fullName: profile.displayName,
+          name: profile.displayName,
           email,
         });
 
-        return done(null, user);
-
+        done(null, user);
       } catch (err) {
-        return done(err, null);
+        done(err);
       }
     }
   )
 );
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
-  done(null, user);
-});
+/* ================= LOCAL ================= */
 
 passport.use(
   new LocalStrategy(
@@ -55,19 +50,32 @@ passport.use(
     async (email, password, done) => {
       try {
         const user = await User.findOne({ email });
+        if (!user || !user.password) return done(null, false);
 
-        if (!user) return done(null, false);
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) return done(null, false);
 
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) return done(null, false);
-
-        return done(null, user);
+        done(null, user);
       } catch (err) {
-        return done(err);
+        done(err);
       }
     }
   )
 );
+
+/* ================= SESSION ================= */
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
 
 module.exports = passport;

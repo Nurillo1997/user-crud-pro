@@ -1,58 +1,48 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
-// GET /signup
-exports.signupPage = async (req, res) => {
+/* GET SIGNUP */
+exports.signupPage = (_, res) => {
   res.render("signup", { title: "Sign up" });
 };
 
-// signup
+/* POST SIGNUP */
 exports.signup = async (req, res) => {
-  const { fullName, name, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-  const existingUser = await User.findOne({ email });
-
-  if (existingUser) {
-    req.session.message = {
-      type: "danger",
-      message: "Email already registered"
-    };
+  const exists = await User.findOne({ email });
+  if (exists) {
+    req.session.message = { type: "danger", message: "Email already exists" };
     return res.redirect("/signup");
   }
 
   const hashed = await bcrypt.hash(password, 10);
 
-  const user = new User({
-    fullName,
+  await User.create({
     name,
     email,
     password: hashed,
   });
 
-  await user.save();
-
-  req.session.message = {
-    type: "success",
-    message: "Registered successfully"
-  };
-
+  req.session.message = { type: "success", message: "Account created" };
   res.redirect("/login");
 };
 
-// GET /login
-exports.loginPage = async (req, res) => {
-  if (req.query.msg === 'logout') {
+/* GET LOGIN */
+exports.loginPage = (req, res) => {
+  if (req.query.msg === "logout") {
     res.locals.message = {
-      type: 'success',
-      message: 'Logged out successfully'
+      type: "success",
+      message: "Logged out successfully",
     };
   }
+
   res.render("login", { title: "Login" });
 };
 
-// LOGOUT
+/* LOGOUT */
 exports.logout = (req, res, next) => {
-  req.logout(function (err) {
+  req.logout((err) => {
     if (err) return next(err);
 
     req.session.destroy(() => {

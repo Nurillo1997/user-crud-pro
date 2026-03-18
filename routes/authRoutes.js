@@ -9,13 +9,25 @@ router.get('/signup', authCtrl.signupPage);
 router.post('/signup', authCtrl.signup);
 
 router.get('/login', authCtrl.loginPage);
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-  })
-);
+
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+
+    if (!user) {
+      req.session.message = {
+        type: "danger",
+        message: info?.message || "Invalid email or password",
+      };
+      return res.redirect("/login");
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.redirect("/");
+    });
+  })(req, res, next);
+});
 
 router.get('/logout', authCtrl.logout);
 

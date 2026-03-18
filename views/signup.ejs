@@ -1,4 +1,4 @@
-<%- include('layout/header') %> 
+<%- include('layout/header') %>
 <%- include('partials/message') %>
 <div class="container">
   <div class="row">
@@ -10,52 +10,19 @@
         <div class="card-body p-4">
           <form action="/signup" method="post">
             <div class="mb-3">
-              <label for="name">Full Name</label>
-              <input
-                type="text"
-                name="fullName"
-                class="form-control form-control-lg"
-                placeholder="Full Name"
-                required
-              />
-            </div>
-            <div class="mb-3">
               <label for="name">Username</label>
-              <input
-                type="text"
-                name="name"
-                class="form-control form-control-lg"
-                placeholder="Username"
-                required
-              />
+              <input type="text" name="name" class="form-control form-control-lg" placeholder="Username" required />
             </div>
             <div class="mb-3">
               <label for="email">Gmail</label>
-              <input
-                type="email"
-                name="email"
-                class="form-control form-control-lg"
-                placeholder="Gmail"
-                required
-              />
+              <input type="email" name="email" class="form-control form-control-lg" placeholder="Gmail" required />
             </div>
             <div class="mb-3">
               <label for="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                class="form-control form-control-lg"
-                placeholder="Password"
-                required
-              />
+              <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" required />
             </div>
             <div class="mb-3 d-grid">
-              <input
-                type="submit"
-                name="submit"
-                value="Sign up"
-                class="btn btn-primary btn-lg"
-              />
+              <input type="submit" name="submit" value="Sign up" class="btn btn-primary btn-lg" />
             </div>
             <p style="text-align: center">
               Already have an acount? <a href="/login">Back to login</a>
