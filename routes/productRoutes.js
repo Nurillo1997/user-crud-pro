@@ -1,5 +1,4 @@
 const router = require('express').Router();
-exports.router = router;
 const ctrl = require('../controllers/productController');
 const upload = require('../middlewares/upload');
 const auth = require('../middlewares/auth');
